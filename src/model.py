@@ -20,10 +20,10 @@ class RNN(nn.Module):
 
     def forward(self, category, input, hidden):
 
-        car_embeds = self.embedding_car(input)
+        car_embeds = self.embedding_car(input).view(1, -1)
         cat_embeds = self.embedding_cat(category)
  
-        cat_embeds = cat_embeds.view(1, -1).repeat(len(input), 1)
+        # cat_embeds = cat_embeds.view(1, -1).repeat(len(input), 1)
 
         combined_input = torch.cat((car_embeds, cat_embeds), 1)
         combined_input = combined_input.unsqueeze(1)
@@ -33,6 +33,7 @@ class RNN(nn.Module):
         output = self.toProbNextLetter(lstm_out.view(-1, self.hidden_size))
         #output = self.dropout(output)
         output = self.softmax(output)
+        output = output.squeeze(0)
 
         return output, hidden
 

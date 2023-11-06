@@ -47,7 +47,7 @@ def train(category_tensor, input_line_tensor, target_line_tensor):
     loss.backward()
     optimizer.step()
 
-    return output, loss.data[0] / input_line_tensor.size(0)
+    return output, loss.data / input_line_tensor.size(0)
 
 
 

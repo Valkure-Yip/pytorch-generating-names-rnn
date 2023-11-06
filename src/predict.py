@@ -8,7 +8,8 @@ import numpy as np
 
 EOS = n_letters-2
 SOS = n_letters-1
-rnn = torch.load(sys.argv[1])
+# rnn = torch.load(sys.argv[1])
+rnn = torch.load('char-rnn-generation1.pt')
 beam_size = 8
 
 def getSoftmaxIndex(top, j):
@@ -38,7 +39,7 @@ def sample(category):
         if len(probs) == 1:
             probs = probs[0]
         else:
-            probs = torch.cat(probs, 1)
+            probs = torch.cat(probs)
 
         if iters != 0:
             howmany = len(input)
@@ -46,7 +47,7 @@ def sample(category):
             howmany = beam_size
 
         topv, topi = probs.topk(howmany)
-        topv, topi = topv.numpy()[0], topi.numpy()[0]
+        topv, topi = topv.numpy(), topi.numpy()
 
         input = []
         old_names = list(names)
